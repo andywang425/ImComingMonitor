@@ -13,6 +13,7 @@ res = None
 config = {
     'check_interval': None,
     'push_plus_token_list': None,
+    'go_cqhttp_url': None,
     'gocq_access_token': None,
     'shop_id': None,
     'qq_group_id': None,
@@ -30,6 +31,7 @@ def load_config():
     config['check_interval'] = cf.getint("monitor", "check_interval")
     config['push_plus_token_list'] = cf.get(
         "monitor", "push_plus_token_list").split(',')
+    config['go_cqhttp_url'] = cf.get("monitor", "go_cqhttp_url")
     config['gocq_access_token'] = cf.get("monitor", "gocq_access_token")
     config['shop_id'] = cf.getint("monitor", "shop_id")
     config['qq_group_id'] = cf.getint("monitor", "qq_group_id")
@@ -63,7 +65,7 @@ def checkShopStatus():
         "http": "http://127.0.0.1:8888",
         "https": "http://127.0.0.1:8888"
     }
-    
+
     try:
         ret = requests.get(url, params=dict_data, headers=headers, timeout=10,
                            #proxies=proxies, verify='./FiddlerRoot.cer'
@@ -92,7 +94,7 @@ def pushplus(*args):
             j = json.loads(ret.text)
             print(j)
         except Exception as e:
-            print('qq推送失败')
+            print('推送加推送失败')
             return False
         time.sleep(0.2)
     return
@@ -108,7 +110,7 @@ def qqbot(*args):
 
     }
     ret = requests.get(
-        'http://localhost:5710/send_group_msg', params=dict_data, timeout=10
+        config['go_cqhttp_url'] + '/send_group_msg', params=dict_data, timeout=10
     )
     try:
         j = json.loads(ret.text)
