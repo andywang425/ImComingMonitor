@@ -12,6 +12,7 @@ res = None
 
 config = {
     'check_interval': None,
+    'request_timeout': None,
     'push_plus_token_list': None,
     'go_cqhttp_url': None,
     'gocq_access_token': None,
@@ -29,6 +30,7 @@ def load_config():
     cf = ConfigParser()  # 实例化
     cf.read(config_path, encoding='utf-8')
     config['check_interval'] = cf.getint("monitor", "check_interval")
+    config['request_timeout'] = cf.getint("monitor", "request_timeout")
     config['push_plus_token_list'] = cf.get(
         "monitor", "push_plus_token_list").split(',')
     config['go_cqhttp_url'] = cf.get("monitor", "go_cqhttp_url")
@@ -67,7 +69,7 @@ def checkShopStatus():
     }
 
     try:
-        ret = requests.get(url, params=dict_data, headers=headers, timeout=10,
+        ret = requests.get(url, params=dict_data, headers=headers, timeout=config['request_timeout'],
                            #proxies=proxies, verify='./FiddlerRoot.cer'
                            )
         j = json.loads(ret.text)
@@ -92,7 +94,7 @@ def pushplus(*args):
         }
         try:
             ret = requests.post('http://www.pushplus.plus/send',
-                                data=dict_data, timeout=10)
+                                data=dict_data, timeout=config['request_timeout'])
             j = json.loads(ret.text)
             print(j)
         except Exception as e:
@@ -112,7 +114,7 @@ def qqbot(*args):
 
     }
     ret = requests.get(
-        config['go_cqhttp_url'] + '/send_group_msg', params=dict_data, timeout=10
+        config['go_cqhttp_url'] + '/send_group_msg', params=dict_data, timeout=config['request_timeout']
     )
     try:
         j = json.loads(ret.text)
