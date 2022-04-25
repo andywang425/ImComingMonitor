@@ -81,6 +81,8 @@ def checkShopStatus():
 
 
 def pushplus(*args):
+    if config['push_plus_token_list'] == ['']:
+        return
     title,  content = args[0], args[1]
     for token in config['push_plus_token_list']:
         dict_data = {
@@ -148,7 +150,8 @@ if __name__ == "__main__":
     print('开始监控')
     load_config()
     firstopen = False
-    start_thread(print_good, config['notify_goods_time_tuple'])
+    if config['gocq_access_token'] != ['']:
+        start_thread(print_good, config['notify_goods_time_tuple'])
     while(True):
         res = checkShopStatus()
         if (res):
@@ -156,10 +159,12 @@ if __name__ == "__main__":
                 if (not firstopen):
                     firstopen = True
                     # print('OPEN')
-                    start_thread(
-                        qqbot, (f'[CQ:at,qq=all] {res["data"]["shop_detail"]["shop_name"]}开门啦！', config['qq_group_id']))
-                    start_thread(pushplus, (f'{res["data"]["shop_detail"]["shop_name"]}开门啦！', json.dumps(
-                        res['data']['shop_detail']['open_setting'], indent=4)))
+                    if config['gocq_access_token'] != ['']:
+                        start_thread(
+                            qqbot, (f'[CQ:at,qq=all] {res["data"]["shop_detail"]["shop_name"]}开门啦！', config['qq_group_id']))
+                    if config['push_plus_token_list'] != ['']:
+                        start_thread(pushplus, (f'{res["data"]["shop_detail"]["shop_name"]}开门啦！', json.dumps(
+                            res['data']['shop_detail']['open_setting'], indent=4)))
             else:
                 # print('CLOSE')
                 if (firstopen):
