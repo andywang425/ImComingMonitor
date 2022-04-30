@@ -96,11 +96,12 @@ def pushplus(*args):
             ret = requests.post('http://www.pushplus.plus/send',
                                 data=dict_data, timeout=config['request_timeout'])
             j = json.loads(ret.text)
-            print(j)
+            if (j['code'] != 200):
+                print('推送加推送出错', j['msg'])
         except Exception as e:
-            print('推送加推送失败')
-            return False
-        time.sleep(0.2)
+            print('推送加推送失败', e)
+        finally:
+            time.sleep(0.2)
     return
 
 
@@ -113,15 +114,15 @@ def qqbot(*args):
         'auto_escape': False
 
     }
-    ret = requests.get(
-        config['go_cqhttp_url'] + '/send_group_msg', params=dict_data, timeout=config['request_timeout']
-    )
     try:
+        ret = requests.get(
+            config['go_cqhttp_url'] + '/send_group_msg', params=dict_data, timeout=config['request_timeout']
+        )
         j = json.loads(ret.text)
-        print(j)
+        if(j['retcode'] != 0):
+            print('qq推送出错', j)
     except Exception as e:
-        print('qq推送失败')
-        return False
+        print('qq推送失败', e)
     return
 
 
