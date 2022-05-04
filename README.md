@@ -4,8 +4,8 @@
 
 ## 功能细节
 
-- 商家开门时通过微信公众号和qq机器人推送通知
-- 在指定时间通过qq机器人推送商家的存货信息
+- 商家开门时通过推送加和 qq 机器人推送通知
+- 在指定时间通过 qq 机器人推送商家的存货信息
 
 ## 使用方法
 
@@ -14,7 +14,7 @@
 3. 申请一个[推送加(pushplus)](http://www.pushplus.plus/)token（可选）。
 4. Clone 本项目到本地。
 5. 安装依赖 `pip install -r requirements.txt`。
-6. 打开项目根目录下的`config.ini`，根据注释填写设置项。
+6. 打开项目根目录下的`config.example.ini`，根据注释填写设置项，将其重命名为`config.ini`。
 7. 运行监控 `python monitor.py`。
 
 ## 免责声明
