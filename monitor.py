@@ -131,7 +131,6 @@ def load_config():
                 section, 'check_interval')
             config[section]['request_timeout'] = cf.getfloat(
                 section, 'request_timeout')
-            print(config[section])
         elif section == 'notify':
             config[section]['push_plus_token_list'] = cf.get(
                 section, 'push_plus_token_list').split(',')
