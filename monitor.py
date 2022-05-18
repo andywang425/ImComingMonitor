@@ -107,9 +107,9 @@ class Shop:
             else:
                 # print('CLOSE')
                 if (self.firstopen):
-                    begin_time = self.res['data']['shop_detail']['open_setting'][0]['begin_time']
-                    end_time = self.res['data']['shop_detail']['open_setting'][0]['end_time']
                     if self.config['go-cqhttp']:
+                        begin_time = self.res['data']['shop_detail']['open_setting'][0]['begin_time']
+                        end_time = self.res['data']['shop_detail']['open_setting'][0]['end_time']
                         start_thread(qqbot, (f'{self.res["data"]["shop_detail"]["shop_name"]}已关门\n以下是商家设置的开关门时间：\n开门：' +
                                              begin_time + '\n关门：' + end_time,))
                 self.firstopen = False
