@@ -62,7 +62,7 @@ class Shop:
 
         try:
             ret = requests.get(url, params=dict_data, headers=headers, timeout=config['monitor']['request_timeout'],
-                               #proxies={"http": "http://127.0.0.1:8888", "https": "http://127.0.0.1:8888"}, verify='./FiddlerRoot.cer'
+                               # proxies={"http": "http://127.0.0.1:8888", "https": "http://127.0.0.1:8888"}, verify='./FiddlerRoot.cer'
                                )
             j = json.loads(ret.text)
             if('data' in j and 'shop_detail' in j['data']):
@@ -109,8 +109,9 @@ class Shop:
                 if (self.firstopen):
                     begin_time = self.res['data']['shop_detail']['open_setting'][0]['begin_time']
                     end_time = self.res['data']['shop_detail']['open_setting'][0]['end_time']
-                    start_thread(qqbot, (f'{self.res["data"]["shop_detail"]["shop_name"]}已关门\n以下是商家设置的开关门时间：\n开门：' +
-                                         begin_time + '\n关门：' + end_time,))
+                    if self.config['go-cqhttp']:
+                        start_thread(qqbot, (f'{self.res["data"]["shop_detail"]["shop_name"]}已关门\n以下是商家设置的开关门时间：\n开门：' +
+                                             begin_time + '\n关门：' + end_time,))
                 self.firstopen = False
         else:
             pass
